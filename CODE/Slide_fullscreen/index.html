@@ -403,133 +403,131 @@ svg {
 
 <script>jQuery(document).ready(function($){function detectmob(){if( navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/webOS/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/BlackBerry/i) || navigator.userAgent.match(/Windows Phone/i) ){return true;}else{return false;}}var t={delay: 125, overlay: $(".fb-overlay"), widget: $(".fb-widget"), button: $(".fb-button")}; setTimeout(function(){$("div.fb-livechat").fadeIn()}, 8 * t.delay); if(!detectmob()){$(".ctrlq").on("click", function(e){e.preventDefault(), t.overlay.is(":visible") ? (t.overlay.fadeOut(t.delay), t.widget.stop().animate({bottom: 0, opacity: 0}, 2 * t.delay, function(){$(this).hide("slow"), t.button.show()})) : t.button.fadeOut("medium", function(){t.widget.stop().show().animate({bottom: "50px", opacity: 1}, 2 * t.delay), t.overlay.fadeIn(t.delay)})})}});
 </script>
-	  
-&lt;script id=&quot;rendered-js&quot;&gt;
-$(document).ready(function () {
-
-  var $slider = $(&quot;.slider&quot;),
-  $slideBGs = $(&quot;.slide__bg&quot;),
-  diff = 0,
-  curSlide = 0,
-  numOfSlides = $(&quot;.slide&quot;).length - 1,
-  animating = false,
-  animTime = 500,
-  autoSlideTimeout,
-  autoSlideDelay = 6000,
-  $pagination = $(&quot;.slider-pagi&quot;);
-
+<script>
+$(document).ready(function() {
+  
+  var $slider = $(".slider"),
+      $slideBGs = $(".slide__bg"),
+      diff = 0,
+      curSlide = 0,
+      numOfSlides = $(".slide").length-1,
+      animating = false,
+      animTime = 500,
+      autoSlideTimeout,
+      autoSlideDelay = 6000,
+      $pagination = $(".slider-pagi");
+  
   function createBullets() {
-    for (var i = 0; i &lt; numOfSlides + 1; i++) {if (window.CP.shouldStopExecution(0)) break;
-      var $li = $(&quot;&lt;li class=&#39;slider-pagi__elem&#39;&gt;&lt;/li&gt;&quot;);
-      $li.addClass(&quot;slider-pagi__elem-&quot; + i).data(&quot;page&quot;, i);
-      if (!i) $li.addClass(&quot;active&quot;);
+    for (var i = 0; i < numOfSlides+1; i++) {
+      var $li = $("<li class='slider-pagi__elem'></li>");
+      $li.addClass("slider-pagi__elem-"+i).data("page", i);
+      if (!i) $li.addClass("active");
       $pagination.append($li);
-    }window.CP.exitedLoop(0);
+    }
   };
-
+  
   createBullets();
-
+  
   function manageControls() {
-    $(&quot;.slider-control&quot;).removeClass(&quot;inactive&quot;);
-    if (!curSlide) $(&quot;.slider-control.left&quot;).addClass(&quot;inactive&quot;);
-    if (curSlide === numOfSlides) $(&quot;.slider-control.right&quot;).addClass(&quot;inactive&quot;);
+    $(".slider-control").removeClass("inactive");
+    if (!curSlide) $(".slider-control.left").addClass("inactive");
+    if (curSlide === numOfSlides) $(".slider-control.right").addClass("inactive");
   };
-
+  
   function autoSlide() {
-    autoSlideTimeout = setTimeout(function () {
+    autoSlideTimeout = setTimeout(function() {
       curSlide++;
-      if (curSlide &gt; numOfSlides) curSlide = 0;
+      if (curSlide > numOfSlides) curSlide = 0;
       changeSlides();
     }, autoSlideDelay);
   };
-
+  
   autoSlide();
-
+  
   function changeSlides(instant) {
     if (!instant) {
       animating = true;
       manageControls();
-      $slider.addClass(&quot;animating&quot;);
-      $slider.css(&quot;top&quot;);
-      $(&quot;.slide&quot;).removeClass(&quot;active&quot;);
-      $(&quot;.slide-&quot; + curSlide).addClass(&quot;active&quot;);
-      setTimeout(function () {
-        $slider.removeClass(&quot;animating&quot;);
+      $slider.addClass("animating");
+      $slider.css("top");
+      $(".slide").removeClass("active");
+      $(".slide-"+curSlide).addClass("active");
+      setTimeout(function() {
+        $slider.removeClass("animating");
         animating = false;
       }, animTime);
     }
     window.clearTimeout(autoSlideTimeout);
-    $(&quot;.slider-pagi__elem&quot;).removeClass(&quot;active&quot;);
-    $(&quot;.slider-pagi__elem-&quot; + curSlide).addClass(&quot;active&quot;);
-    $slider.css(&quot;transform&quot;, &quot;translate3d(&quot; + -curSlide * 100 + &quot;%,0,0)&quot;);
-    $slideBGs.css(&quot;transform&quot;, &quot;translate3d(&quot; + curSlide * 50 + &quot;%,0,0)&quot;);
+    $(".slider-pagi__elem").removeClass("active");
+    $(".slider-pagi__elem-"+curSlide).addClass("active");
+    $slider.css("transform", "translate3d("+ -curSlide*100 +"%,0,0)");
+    $slideBGs.css("transform", "translate3d("+ curSlide*50 +"%,0,0)");
     diff = 0;
     autoSlide();
   }
 
   function navigateLeft() {
     if (animating) return;
-    if (curSlide &gt; 0) curSlide--;
+    if (curSlide > 0) curSlide--;
     changeSlides();
   }
 
   function navigateRight() {
     if (animating) return;
-    if (curSlide &lt; numOfSlides) curSlide++;
+    if (curSlide < numOfSlides) curSlide++;
     changeSlides();
   }
 
-  $(document).on(&quot;mousedown touchstart&quot;, &quot;.slider&quot;, function (e) {
+  $(document).on("mousedown touchstart", ".slider", function(e) {
     if (animating) return;
     window.clearTimeout(autoSlideTimeout);
     var startX = e.pageX || e.originalEvent.touches[0].pageX,
-    winW = $(window).width();
+        winW = $(window).width();
     diff = 0;
-
-    $(document).on(&quot;mousemove touchmove&quot;, function (e) {
+    
+    $(document).on("mousemove touchmove", function(e) {
       var x = e.pageX || e.originalEvent.touches[0].pageX;
       diff = (startX - x) / winW * 70;
-      if (!curSlide &amp;&amp; diff &lt; 0 || curSlide === numOfSlides &amp;&amp; diff &gt; 0) diff /= 2;
-      $slider.css(&quot;transform&quot;, &quot;translate3d(&quot; + (-curSlide * 100 - diff) + &quot;%,0,0)&quot;);
-      $slideBGs.css(&quot;transform&quot;, &quot;translate3d(&quot; + (curSlide * 50 + diff / 2) + &quot;%,0,0)&quot;);
+      if ((!curSlide && diff < 0) || (curSlide === numOfSlides && diff > 0)) diff /= 2;
+      $slider.css("transform", "translate3d("+ (-curSlide*100 - diff) +"%,0,0)");
+      $slideBGs.css("transform", "translate3d("+ (curSlide*50 + diff/2) +"%,0,0)");
     });
   });
-
-  $(document).on(&quot;mouseup touchend&quot;, function (e) {
-    $(document).off(&quot;mousemove touchmove&quot;);
+  
+  $(document).on("mouseup touchend", function(e) {
+    $(document).off("mousemove touchmove");
     if (animating) return;
     if (!diff) {
       changeSlides(true);
       return;
     }
-    if (diff &gt; -8 &amp;&amp; diff &lt; 8) {
+    if (diff > -8 && diff < 8) {
       changeSlides();
       return;
     }
-    if (diff &lt;= -8) {
+    if (diff <= -8) {
       navigateLeft();
     }
-    if (diff &gt;= 8) {
+    if (diff >= 8) {
       navigateRight();
     }
   });
-
-  $(document).on(&quot;click&quot;, &quot;.slider-control&quot;, function () {
-    if ($(this).hasClass(&quot;left&quot;)) {
+  
+  $(document).on("click", ".slider-control", function() {
+    if ($(this).hasClass("left")) {
       navigateLeft();
     } else {
       navigateRight();
     }
   });
-
-  $(document).on(&quot;click&quot;, &quot;.slider-pagi__elem&quot;, function () {
-    curSlide = $(this).data(&quot;page&quot;);
+  
+  $(document).on("click", ".slider-pagi__elem", function() {
+    curSlide = $(this).data("page");
     changeSlides();
   });
-
+  
 });
-//# sourceURL=pen.js
-    &lt;/script&gt;
+</script>
 
 
 <div class='slider-container'>
